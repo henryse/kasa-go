@@ -26,7 +26,7 @@ func (ap AP) String() (s string) {
 	return s
 }
 
-type reponseBody struct {
+type responseBody struct {
 	ErrorCode    int    `json:"error_code,omitempty"`
 	Result       result `json:"result,omitempty"`
 	ErrorMessage string `json:"msg,omitempty"`
@@ -127,7 +127,7 @@ func parseResponse(res *http.Response) (result, error) {
 	if err != nil {
 		return r, err
 	}
-	rb := reponseBody{}
+	rb := responseBody{}
 	err = json.Unmarshal(bodyBytes, &rb)
 	if rb.ErrorCode != codeNoError {
 		if rb.ErrorMessage == "" {

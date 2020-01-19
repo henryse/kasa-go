@@ -8,7 +8,7 @@ const (
 	cloudURL          = "https://wap.tplinkcloud.com"
 	methodLogin       = "login"
 	methodGetDevices  = "getDeviceList"
-	methodPassthrough = "passthrough"
+	methodPassThrough = "passthrough"
 	appType           = "Kasa_Android"
 )
 
@@ -26,6 +26,7 @@ type api struct {
 }
 
 // Connect Create an authenticated API
+//noinspection GoUnusedExportedFunction
 func Connect(username, password string) (API, error) {
 	a := api{
 		Auth: auth{

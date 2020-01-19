@@ -44,7 +44,7 @@ func (s smartPlug) GetAlias() string {
 func (s smartPlug) GetInfo() (DeviceInfo, error) {
 	var deviceInfo DeviceInfo
 	res, err := s.getAuthRequest(requestBody{
-		Method: methodPassthrough,
+		Method: methodPassThrough,
 		Params: params{
 			DeviceID:    s.DeviceID,
 			RequestData: "{\"system\": {\"get_sysinfo\": {}}}",
@@ -64,7 +64,7 @@ func (s smartPlug) GetInfo() (DeviceInfo, error) {
 
 func (s smartPlug) TurnOn() error {
 	_, err := s.getAuthRequest(requestBody{
-		Method: methodPassthrough,
+		Method: methodPassThrough,
 		Params: params{
 			DeviceID:    s.DeviceID,
 			RequestData: "{\"system\": {\"set_relay_state\": {\"state\": 1}}}",
@@ -75,7 +75,7 @@ func (s smartPlug) TurnOn() error {
 
 func (s smartPlug) TurnOff() error {
 	_, err := s.getAuthRequest(requestBody{
-		Method: methodPassthrough,
+		Method: methodPassThrough,
 		Params: params{
 			DeviceID:    s.DeviceID,
 			RequestData: "{\"system\": {\"set_relay_state\": {\"state\": 0}}}",
@@ -97,13 +97,13 @@ func (s smartPlug) SwitchOnOff() error {
 
 func (s smartPlug) Reboot() error {
 	_, err := s.getAuthRequest(requestBody{
-		Method: methodPassthrough,
+		Method: methodPassThrough,
 		Params: params{
 			DeviceID:    s.DeviceID,
 			RequestData: "{\"system\":{\"reboot\":{\"delay\":1}}}",
 		},
 	}).execute()
-	if err.Error() == "Request timeout" {
+	if err != nil && err.Error() == "Request timeout" {
 		err = nil
 	}
 	return err
@@ -112,7 +112,7 @@ func (s smartPlug) Reboot() error {
 func (s smartPlug) ScanAPs() ([]AP, error) {
 	aps := make([]AP, 0)
 	res, err := s.getAuthRequest(requestBody{
-		Method: methodPassthrough,
+		Method: methodPassThrough,
 		Params: params{
 			DeviceID:    s.DeviceID,
 			RequestData: "{\"netif\":{\"get_scaninfo\":{\"refresh\":1}}}",
@@ -121,7 +121,7 @@ func (s smartPlug) ScanAPs() ([]AP, error) {
 	if err != nil {
 		return nil, err
 	}
-	re := regexp.MustCompile(`.*ap_list":(\[.*\])`)
+	re := regexp.MustCompile(`.*ap_list":(\[.*])`)
 	data := re.FindStringSubmatch(res.ResponseData)
 	if len(data) < 2 {
 		return aps, nil
